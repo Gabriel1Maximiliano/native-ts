@@ -1,18 +1,13 @@
 import React, { useState } from 'react';
+import { useCounter } from '../hooks/useCounter';
 
 export const Counter = () => {
 
-  const [ counter, setCounter ] = useState<number>( 0 );
-
-  const handleIncreaseBy = ( value:number ): void =>{
-  
-    setCounter( ( prev ) => prev + value  )
-
-  }
+  const { handleIncreaseBy,value  } =useCounter( 0 )
 
   return (
     <div className='container' >
-      <h1>Counter-ts : { counter }</h1>
+      <h1>Counter-ts : { value }</h1>
       <hr />
       <button className='btn btn-primary' onClick={ ()=>handleIncreaseBy( +1 ) }> + </button>
      {' '}
