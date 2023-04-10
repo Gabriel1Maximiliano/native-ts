@@ -1,33 +1,33 @@
-import { useEffect, useState } from "react";
+import {  useRef } from "react";
 
-import axios from 'axios';
-import { reqResApi } from "../api/reqRes";
-import { IRequestResponseList, IUser } from "../interfaces/resApiInterfaces";
+import { IUser } from "../interfaces/resApiInterfaces";
+import { useUsers } from "../hooks/useUsers";
 
 
 export const Users = () => {
 
-     const [ users,setUsers ] = useState<IUser[]>();
-     console.log(users)
 
-    useEffect(() => {
-     
-        // fetch('https://reqres.in/api/users')
-        //      .then( data=> data.json() )
-        //      .then( response=> setData( response ))
+     const pageRef = useRef( 0 );
 
-        // axios.get('https://reqres.in/api/users')
-        //      .then( ( { data } ) => setData( data ) )
-        //      .catch( error =>console.log(error) )
-             reqResApi.get<IRequestResponseList>( '/users' )
-                      .then( (  data  ) => setUsers( data.data.data ) )
-                      .catch( error =>console.log(error) )
-    }, [])
+     const { users,nextPage,prevPage } = useUsers();
+
+   
 
     const renderItem = ( user:IUser ) =>{
         return(
+           
             <tr key={ user.id.toString() } >
-                <td>{user.avatar }</td>
+                <td>
+                  <img 
+                  src={ user.avatar  } 
+                  alt="avatar" 
+                  style={{
+                    width:35,
+                    borderRadius:100
+
+                  }}
+                  />
+                </td>
                 <td>{ user.first_name }</td>
                 <td>{ user.email }</td>
             </tr>
@@ -52,7 +52,20 @@ export const Users = () => {
                users?.map( ( user : IUser )=>( renderItem( user )
                ) )             }
         </tbody>
+        
         </table>
+        <button 
+        className="btn btn-primary" 
+        onClick={ nextPage }
+        
+        >Siguiente</button>
+              {' '}
+          <button 
+        className="btn btn-primary" 
+  
+        onClick={ prevPage }
+        
+        >Atras</button>
     </div>
   )
 }
